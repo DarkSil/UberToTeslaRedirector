@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Waze</string>
+    <string name="statusMode">Mode: {status}</string>
+    <string name="remainTime">Remaining time: {time}</string>
+    <string name="modeTesting">Testing</string>
+    <string name="modePaid">Paid</string>
 </resources>
