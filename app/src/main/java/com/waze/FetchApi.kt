@@ -7,6 +7,6 @@ import retrofit2.http.Query
 interface FetchApi {
 
     @GET("/fetchUser.php")
-    fun fetch(@Query("userId") id : String) : Call<FetchData>
+    fun fetch(@Query("userId") id : String, @Query("appVersion") appVersion: Int) : Call<FetchData>
 
 }

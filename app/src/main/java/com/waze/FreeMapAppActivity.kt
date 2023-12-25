@@ -21,9 +21,14 @@ import java.time.ZoneId
 class FreeMapAppActivity : AppCompatActivity() {
 
     // TODO Change +2 to the server timezone
+    // TODO Change email address
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private val WAZE_CONST = "waze://?ll="
+
+    companion object {
+        var isRedirect = false
+    }
 
     private val fetchService by lazy {
         Retrofit.Builder()
@@ -34,10 +39,20 @@ class FreeMapAppActivity : AppCompatActivity() {
     }
 
     private val sharedPreferences by lazy { getSharedPreferences("details", Context.MODE_PRIVATE) }
+    private val id by lazy { Settings.Secure.getString(application.contentResolver, Settings.Secure.ANDROID_ID) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        binding.textUserId.text = getString(R.string.user_id).replace("{id}", id)
+        binding.textSupport.setOnClickListener {
+            isRedirect = true
+            startActivity(Intent.createChooser(
+                Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:example@gmail.com")),
+                "Select an app"
+            ))
+        }
 
         val date = sharedPreferences.getString("date", null)
         with(date) {
@@ -80,6 +95,7 @@ class FreeMapAppActivity : AppCompatActivity() {
                     binding.testStatus.text = stringBuilder.toString()
                     binding.progressLoad.isVisible = false
                     binding.testStatus.isVisible = true
+                    binding.linearSupport.isVisible = true
 
                     processDeeplink(intent)
                 }
@@ -92,8 +108,7 @@ class FreeMapAppActivity : AppCompatActivity() {
     }
 
     private fun fetch() {
-        val id = Settings.Secure.getString(application.contentResolver, Settings.Secure.ANDROID_ID)
-        fetchService.fetch(id).enqueue(object : Callback<FetchData> {
+        fetchService.fetch(id, BuildConfig.VERSION_CODE).enqueue(object : Callback<FetchData> {
             override fun onResponse(call: Call<FetchData>, response: Response<FetchData>) {
                 if (response.isSuccessful) {
                     response.body()?.let {
@@ -125,14 +140,37 @@ class FreeMapAppActivity : AppCompatActivity() {
                 processPaidFeature(getString(R.string.modePaid), fetchData)
             }
             FetchData.STATUS.UNPAID -> {
-                handleUnpaid()
+                handleUnpaid(fetchData)
             }
         }
     }
 
-    private fun handleUnpaid() {
+    private fun handleUnpaid(fetchData: FetchData) {
         binding.progressLoad.isVisible = false
-        // TODO Show payment screen
+        binding.linearSubscription.isVisible = true
+        binding.linearSupport.isVisible = true
+
+        val periodStatus = sharedPreferences.getString("status", FetchData.STATUS.PAID.status)
+        val period = when (periodStatus) {
+            FetchData.STATUS.TEST.status -> getString(R.string.modeTesting)
+            FetchData.STATUS.PAID.status -> getString(R.string.modePaid)
+            else -> { getString(R.string.modePaid) }
+        }
+        binding.textPeriodEnded.text = getString(R.string.periodEnded).replace("{period}", period)
+
+        binding.paymentButton.setOnClickListener {
+            val intent = Intent(this, PaymentActivity::class.java)
+            intent.action = this.intent.action
+            intent.data = this.intent.data
+            startActivity(intent)
+            finish()
+        }
+
+        if (intent.data == null && fetchData.updateRequired && !fetchData.downloadUrl.isNullOrEmpty()) {
+            UpdateDialog()
+                .setDownloadUrl(fetchData.downloadUrl)
+                .show(supportFragmentManager, null)
+        }
     }
 
     private fun processPaidFeature(status: String, fetchData: FetchData) {
@@ -148,7 +186,12 @@ class FreeMapAppActivity : AppCompatActivity() {
         binding.testStatus.text = stringBuilder.toString()
         binding.progressLoad.isVisible = false
         binding.testStatus.isVisible = true
+        binding.linearSupport.isVisible = true
         processDeeplink(intent)
+
+        if (intent.data == null && fetchData.updateRequired) {
+            UpdateDialog().show(supportFragmentManager, null)
+        }
     }
 
     private fun processDeeplink(intent: Intent?) {
@@ -234,5 +277,13 @@ class FreeMapAppActivity : AppCompatActivity() {
         }
 
         return ""
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (!isRedirect) {
+            finish()
+        }
+        isRedirect = false
     }
 }

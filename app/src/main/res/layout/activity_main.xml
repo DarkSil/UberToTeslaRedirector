@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
     tools:context=".FreeMapAppActivity">
 
     <TextView
@@ -25,5 +26,81 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/linearSubscription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginHorizontal="26dp"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/textPeriodEnded"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/alata"
+            android:text="@string/periodEnded"
+            android:textColor="@color/black"
+            android:textSize="22sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:fontFamily="@font/alata"
+            android:text="@string/proceed"
+            android:layout_marginTop="60dp"/>
+
+        <TextView
+            android:id="@+id/paymentButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:fontFamily="@font/alata"
+            android:text="@string/pay"
+            android:gravity="center"
+            android:background="@drawable/background_pay_btn"
+            android:paddingBottom="6dp"
+            android:layout_marginTop="60dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearSupport"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="8dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/textUserId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:fontFamily="@font/alata"
+            android:textSize="12sp"
+            android:text="@string/user_id"
+            android:textIsSelectable="true"/>
+
+        <TextView
+            android:id="@+id/textSupport"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:fontFamily="@font/alata"
+            android:textSize="12sp"
+            android:text="@string/write_to_support"
+            android:gravity="end"/>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
