@@ -20,20 +20,12 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            isMinifyEnabled = false
 
             buildConfigField("String", "baseUrl", "\"https://redirect.api4glisk.space/\"")
         }
         debug {
-            isMinifyEnabled = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            isMinifyEnabled = false
 
             buildConfigField("String", "baseUrl", "\"https://redirect.api4glisk.space/\"")
         }

@@ -15,7 +15,6 @@ import com.waze.databinding.DialogUpdateBinding
 class UpdateDialog : DialogFragment() {
 
     private val binding by lazy { DialogUpdateBinding.inflate(layoutInflater) }
-    private var downloadUrl : String = ""
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
@@ -36,14 +35,14 @@ class UpdateDialog : DialogFragment() {
 
         binding.downloadButton.setOnClickListener {
             FreeMapAppActivity.isRedirect = true
-            requireContext().startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(downloadUrl)))
+            var url = BuildConfig.baseUrl
+            if (url.last() != '/') {
+                url += "/"
+            }
+            url += "update/app.apk"
+            requireContext().startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
             dismiss()
         }
-    }
-
-    fun setDownloadUrl(downloadUrl: String): UpdateDialog {
-        this.downloadUrl = downloadUrl
-        return this
     }
 
 }

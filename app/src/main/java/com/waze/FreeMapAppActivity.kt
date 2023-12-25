@@ -166,9 +166,8 @@ class FreeMapAppActivity : AppCompatActivity() {
             finish()
         }
 
-        if (intent.data == null && fetchData.updateRequired && !fetchData.downloadUrl.isNullOrEmpty()) {
+        if (intent.data == null && fetchData.updateRequired) {
             UpdateDialog()
-                .setDownloadUrl(fetchData.downloadUrl)
                 .show(supportFragmentManager, null)
         }
     }
