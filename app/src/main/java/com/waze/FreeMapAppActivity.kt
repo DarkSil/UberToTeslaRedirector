@@ -5,6 +5,10 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.TextAppearanceSpan
+import android.util.TypedValue
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -40,6 +44,35 @@ class FreeMapAppActivity : AppCompatActivity() {
 
     private val sharedPreferences by lazy { getSharedPreferences("details", Context.MODE_PRIVATE) }
     private val id by lazy { Settings.Secure.getString(application.contentResolver, Settings.Secure.ANDROID_ID) }
+
+    fun Context.toPx(dp: Int): Float = TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP,
+        dp.toFloat(),
+        resources.displayMetrics)
+
+    private val paidEnjoy by lazy {
+        val text = getString(R.string.paid_enjoy)
+        val spannableString = SpannableString(text)
+        spannableString.setSpan(
+            TextAppearanceSpan(null, 0, toPx(16).toInt(), null, null),
+            text.indexOf("You"),
+            text.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        spannableString
+    }
+
+    private val welcome by lazy {
+        val text = getString(R.string.welcome)
+        val spannableString = SpannableString(text)
+        spannableString.setSpan(
+            TextAppearanceSpan(null, 0, toPx(16).toInt(), null, null),
+            text.indexOf("You"),
+            text.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        spannableString
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,7 +123,7 @@ class FreeMapAppActivity : AppCompatActivity() {
                             binding.proceedText.text = stringBuilder.toString()
                             binding.refreshLayout.isRefreshing = false
                             binding.textPeriodEnded.isVisible = true
-                            binding.textPeriodEnded.text = getString(R.string.welcome)
+                            binding.textPeriodEnded.text = welcome
                             binding.paymentButton.isVisible = true
                             binding.linearSubscription.isVisible = true
                             binding.linearSupport.isVisible = true
@@ -104,7 +137,7 @@ class FreeMapAppActivity : AppCompatActivity() {
                             }
                         }
                         FetchData.STATUS.PAID -> {
-                            binding.proceedText.text = getString(R.string.paid_enjoy)
+                            binding.proceedText.text = paidEnjoy
                             binding.refreshLayout.isRefreshing = false
                             binding.textPeriodEnded.isVisible = false
                             binding.paymentButton.isVisible = false
@@ -161,7 +194,7 @@ class FreeMapAppActivity : AppCompatActivity() {
                 binding.proceedText.text = stringBuilder.toString()
                 binding.refreshLayout.isRefreshing = false
                 binding.textPeriodEnded.isVisible = true
-                binding.textPeriodEnded.text = getString(R.string.welcome)
+                binding.textPeriodEnded.text = welcome
                 binding.paymentButton.isVisible = true
                 binding.linearSubscription.isVisible = true
                 binding.linearSupport.isVisible = true
@@ -179,7 +212,7 @@ class FreeMapAppActivity : AppCompatActivity() {
             FetchData.STATUS.PAID -> {
                 processPaidFeature(fetchData)
 
-                binding.proceedText.text = getString(R.string.paid_enjoy)
+                binding.proceedText.text = paidEnjoy
                 binding.refreshLayout.isRefreshing = false
                 binding.textPeriodEnded.isVisible = false
                 binding.paymentButton.isVisible = false
@@ -196,7 +229,7 @@ class FreeMapAppActivity : AppCompatActivity() {
         binding.refreshLayout.isRefreshing = false
         binding.linearSubscription.isVisible = true
         binding.textPeriodEnded.isVisible = true
-        binding.textPeriodEnded.text = getString(R.string.welcome)
+        binding.textPeriodEnded.text = welcome
         binding.paymentButton.isVisible = true
         binding.linearSupport.isVisible = true
 

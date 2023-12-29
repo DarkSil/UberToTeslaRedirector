@@ -3,13 +3,13 @@
     <string name="statusMode">Free Trial</string>
     <string name="remainTime">{time}</string>
     <string name="periodEnded">Free Trial End</string>
-    <string name="welcome">Welcome</string>
-    <string name="proceed">To continue using the app proceed with payment (lifetime subscription)</string>
+    <string name="welcome">Welcome\nto TESLA GPS Connection\n\nYou don\'t have to open the app every time. It can work in the background by itself. If you have any questions you can ask support using Help button.</string>
+    <string name="proceed">To continue using the app proceed with payment</string>
     <string name="pay">BUY NOW</string>
     <string name="user_id">ID: {id}</string>
     <string name="write_to_support"><u>Help</u></string>
     <string name="new_version_available">New version available</string>
     <string name="download">Download</string>
-    <string name="paid_enjoy">Paid\nEnjoy!</string>
+    <string name="paid_enjoy">Paid\nEnjoy!\n\nTESLA GPS Connection\n\nYou don\'t have to open the app every time. It can work in the background by itself. If you have any questions you can ask support using Help button.</string>
     <string name="emailSubject">Support case ID: {id}</string>
 </resources>
