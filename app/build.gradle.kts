@@ -25,7 +25,7 @@ android {
                 "proguard-rules.pro"
             )
 
-            buildConfigField("String", "baseUrl", "\"https://redirect.api4glisk.space/\"")
+            buildConfigField("String", "baseUrl", "\"https://www.teslagpsconnection.space/\"")
         }
         debug {
             isMinifyEnabled = false
@@ -34,7 +34,7 @@ android {
                 "proguard-rules.pro"
             )
 
-            buildConfigField("String", "baseUrl", "\"https://redirect.api4glisk.space/\"")
+            buildConfigField("String", "baseUrl", "\"https://www.teslagpsconnection.space/\"")
         }
     }
     compileOptions {
