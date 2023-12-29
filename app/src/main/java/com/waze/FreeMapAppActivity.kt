@@ -54,6 +54,11 @@ class FreeMapAppActivity : AppCompatActivity() {
             startActivity(Intent.createChooser(mailIntent, "Select an app"))
         }
 
+        binding.refreshLayout.isRefreshing = true
+        binding.refreshLayout.setOnRefreshListener {
+            fetch()
+        }
+
         val date = sharedPreferences.getString("date", null)
         with(date) {
             this?.let {
@@ -83,8 +88,9 @@ class FreeMapAppActivity : AppCompatActivity() {
                             stringBuilder.append("\n")
                             stringBuilder.append(getString(R.string.remainTime).replace("{time}", getRemainingTime()))
                             binding.proceedText.text = stringBuilder.toString()
-                            binding.progressLoad.isVisible = false
+                            binding.refreshLayout.isRefreshing = false
                             binding.textPeriodEnded.isVisible = true
+                            binding.textPeriodEnded.text = getString(R.string.welcome)
                             binding.paymentButton.isVisible = true
                             binding.linearSubscription.isVisible = true
                             binding.linearSupport.isVisible = true
@@ -99,7 +105,7 @@ class FreeMapAppActivity : AppCompatActivity() {
                         }
                         FetchData.STATUS.PAID -> {
                             binding.proceedText.text = getString(R.string.paid_enjoy)
-                            binding.progressLoad.isVisible = false
+                            binding.refreshLayout.isRefreshing = false
                             binding.textPeriodEnded.isVisible = false
                             binding.paymentButton.isVisible = false
                             binding.linearSubscription.isVisible = true
@@ -153,8 +159,9 @@ class FreeMapAppActivity : AppCompatActivity() {
                 stringBuilder.append("\n")
                 stringBuilder.append(getString(R.string.remainTime).replace("{time}", getRemainingTime()))
                 binding.proceedText.text = stringBuilder.toString()
-                binding.progressLoad.isVisible = false
+                binding.refreshLayout.isRefreshing = false
                 binding.textPeriodEnded.isVisible = true
+                binding.textPeriodEnded.text = getString(R.string.welcome)
                 binding.paymentButton.isVisible = true
                 binding.linearSubscription.isVisible = true
                 binding.linearSupport.isVisible = true
@@ -173,7 +180,7 @@ class FreeMapAppActivity : AppCompatActivity() {
                 processPaidFeature(fetchData)
 
                 binding.proceedText.text = getString(R.string.paid_enjoy)
-                binding.progressLoad.isVisible = false
+                binding.refreshLayout.isRefreshing = false
                 binding.textPeriodEnded.isVisible = false
                 binding.paymentButton.isVisible = false
                 binding.linearSubscription.isVisible = true
@@ -186,9 +193,10 @@ class FreeMapAppActivity : AppCompatActivity() {
     }
 
     private fun handleUnpaid(fetchData: FetchData) {
-        binding.progressLoad.isVisible = false
+        binding.refreshLayout.isRefreshing = false
         binding.linearSubscription.isVisible = true
         binding.textPeriodEnded.isVisible = true
+        binding.textPeriodEnded.text = getString(R.string.welcome)
         binding.paymentButton.isVisible = true
         binding.linearSupport.isVisible = true
 
