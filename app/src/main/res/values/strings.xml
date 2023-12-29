@@ -1,14 +1,15 @@
 <resources>
     <string name="app_name">Waze</string>
-    <string name="statusMode">Mode: {status}</string>
-    <string name="remainTime">Remaining time: {time}</string>
-    <string name="modeTesting">Testing</string>
-    <string name="modePaid">Paid</string>
-    <string name="periodEnded">Your {period} period has ended</string>
-    <string name="proceed">To continue using an application please proceed with payment</string>
-    <string name="pay">Pay</string>
+    <string name="statusMode">Free Trial</string>
+    <string name="remainTime">{time}</string>
+    <string name="periodEnded">Free Trial End</string>
+    <string name="welcome">Welcome</string>
+    <string name="proceed">To continue using the app proceed with payment (lifetime subscription)</string>
+    <string name="pay">BUY NOW</string>
     <string name="user_id">ID: {id}</string>
-    <string name="write_to_support"><u>Write to support</u></string>
+    <string name="write_to_support"><u>Help</u></string>
     <string name="new_version_available">New version available</string>
     <string name="download">Download</string>
+    <string name="paid_enjoy">Paid\nEnjoy!</string>
+    <string name="emailSubject">Support case ID: {id}</string>
 </resources>

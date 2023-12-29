@@ -7,16 +7,6 @@
     android:background="@color/white"
     tools:context=".FreeMapAppActivity">
 
-    <TextView
-        android:id="@+id/testStatus"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="20dp"
-        android:gravity="center"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:visibility="gone"/>
-
     <ProgressBar
         android:id="@+id/progressLoad"
         android:layout_width="60dp"
@@ -34,26 +24,29 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginHorizontal="26dp"
-        android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="gone"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/textPeriodEnded"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/alata"
-            android:text="@string/periodEnded"
+            android:text="@string/welcome"
             android:textColor="@color/black"
-            android:textSize="22sp" />
+            android:textSize="22sp"
+            android:layout_marginBottom="60dp"
+            android:gravity="center"/>
 
         <TextView
+            android:id="@+id/proceedText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:fontFamily="@font/alata"
             android:text="@string/proceed"
-            android:layout_marginTop="60dp"/>
+            android:gravity="center"/>
 
         <TextView
             android:id="@+id/paymentButton"

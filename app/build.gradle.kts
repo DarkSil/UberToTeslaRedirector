@@ -8,7 +8,6 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        // com.example.googlemapredirector
         applicationId = "com.waze"
         minSdk = 26
         targetSdk = 34
@@ -21,11 +20,19 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
 
             buildConfigField("String", "baseUrl", "\"https://redirect.api4glisk.space/\"")
         }
         debug {
             isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
 
             buildConfigField("String", "baseUrl", "\"https://redirect.api4glisk.space/\"")
         }

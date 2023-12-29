@@ -48,10 +48,10 @@ class FreeMapAppActivity : AppCompatActivity() {
         binding.textUserId.text = getString(R.string.user_id).replace("{id}", id)
         binding.textSupport.setOnClickListener {
             isRedirect = true
-            startActivity(Intent.createChooser(
-                Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:example@gmail.com")),
-                "Select an app"
-            ))
+
+            val subject = getString(R.string.emailSubject).replace("{id}", id)
+            val mailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:example@gmail.com?subject=$subject"))
+            startActivity(Intent.createChooser(mailIntent, "Select an app"))
         }
 
         val date = sharedPreferences.getString("date", null)
@@ -76,26 +76,38 @@ class FreeMapAppActivity : AppCompatActivity() {
                 } else {
                     val status = FetchData.STATUS.entries
                         .filter { it.status == sharedPreferences.getString("status", FetchData.STATUS.TEST.status) }[0]
-                    val statusText = when(status) {
+                    when(status) {
                         FetchData.STATUS.TEST -> {
-                            getString(R.string.modeTesting)
+                            val stringBuilder = StringBuilder()
+                            stringBuilder.append(getString(R.string.statusMode))
+                            stringBuilder.append("\n")
+                            stringBuilder.append(getString(R.string.remainTime).replace("{time}", getRemainingTime()))
+                            binding.proceedText.text = stringBuilder.toString()
+                            binding.progressLoad.isVisible = false
+                            binding.textPeriodEnded.isVisible = true
+                            binding.paymentButton.isVisible = true
+                            binding.linearSubscription.isVisible = true
+                            binding.linearSupport.isVisible = true
+
+                            binding.paymentButton.setOnClickListener {
+                                val intent = Intent(this@FreeMapAppActivity, RoutesActivity::class.java)
+                                intent.action = this@FreeMapAppActivity.intent.action
+                                intent.data = this@FreeMapAppActivity.intent.data
+                                startActivity(intent)
+                                finish()
+                            }
                         }
                         FetchData.STATUS.PAID -> {
-                            getString(R.string.modePaid)
+                            binding.proceedText.text = getString(R.string.paid_enjoy)
+                            binding.progressLoad.isVisible = false
+                            binding.textPeriodEnded.isVisible = false
+                            binding.paymentButton.isVisible = false
+                            binding.linearSubscription.isVisible = true
+                            binding.linearSupport.isVisible = true
                         }
                         FetchData.STATUS.UNPAID -> {
-                            ""
                         }
                     }
-
-                    val stringBuilder = StringBuilder()
-                    stringBuilder.append(getString(R.string.statusMode).replace("{status}", statusText))
-                    stringBuilder.append("\n")
-                    stringBuilder.append(getString(R.string.remainTime).replace("{time}", getRemainingTime()))
-                    binding.testStatus.text = stringBuilder.toString()
-                    binding.progressLoad.isVisible = false
-                    binding.testStatus.isVisible = true
-                    binding.linearSupport.isVisible = true
 
                     processDeeplink(intent)
                 }
@@ -134,10 +146,38 @@ class FreeMapAppActivity : AppCompatActivity() {
     private fun handleResponse(fetchData: FetchData) {
         when (fetchData.getStatus()) {
             FetchData.STATUS.TEST -> {
-                processPaidFeature(getString(R.string.modeTesting), fetchData)
+                processPaidFeature(fetchData)
+
+                val stringBuilder = StringBuilder()
+                stringBuilder.append(getString(R.string.statusMode))
+                stringBuilder.append("\n")
+                stringBuilder.append(getString(R.string.remainTime).replace("{time}", getRemainingTime()))
+                binding.proceedText.text = stringBuilder.toString()
+                binding.progressLoad.isVisible = false
+                binding.textPeriodEnded.isVisible = true
+                binding.paymentButton.isVisible = true
+                binding.linearSubscription.isVisible = true
+                binding.linearSupport.isVisible = true
+
+                processDeeplink(intent)
+
+                binding.paymentButton.setOnClickListener {
+                    val intent = Intent(this, RoutesActivity::class.java)
+                    intent.action = this.intent.action
+                    intent.data = this.intent.data
+                    startActivity(intent)
+                    finish()
+                }
             }
             FetchData.STATUS.PAID -> {
-                processPaidFeature(getString(R.string.modePaid), fetchData)
+                processPaidFeature(fetchData)
+
+                binding.proceedText.text = getString(R.string.paid_enjoy)
+                binding.progressLoad.isVisible = false
+                binding.textPeriodEnded.isVisible = false
+                binding.paymentButton.isVisible = false
+                binding.linearSubscription.isVisible = true
+                binding.linearSupport.isVisible = true
             }
             FetchData.STATUS.UNPAID -> {
                 handleUnpaid(fetchData)
@@ -148,18 +188,15 @@ class FreeMapAppActivity : AppCompatActivity() {
     private fun handleUnpaid(fetchData: FetchData) {
         binding.progressLoad.isVisible = false
         binding.linearSubscription.isVisible = true
+        binding.textPeriodEnded.isVisible = true
+        binding.paymentButton.isVisible = true
         binding.linearSupport.isVisible = true
 
-        val periodStatus = sharedPreferences.getString("status", FetchData.STATUS.PAID.status)
-        val period = when (periodStatus) {
-            FetchData.STATUS.TEST.status -> getString(R.string.modeTesting)
-            FetchData.STATUS.PAID.status -> getString(R.string.modePaid)
-            else -> { getString(R.string.modePaid) }
-        }
-        binding.textPeriodEnded.text = getString(R.string.periodEnded).replace("{period}", period)
+        binding.textPeriodEnded.text = getString(R.string.periodEnded)
+        binding.proceedText.text = getString(R.string.proceed)
 
         binding.paymentButton.setOnClickListener {
-            val intent = Intent(this, PaymentActivity::class.java)
+            val intent = Intent(this, RoutesActivity::class.java)
             intent.action = this.intent.action
             intent.data = this.intent.data
             startActivity(intent)
@@ -172,24 +209,15 @@ class FreeMapAppActivity : AppCompatActivity() {
         }
     }
 
-    private fun processPaidFeature(status: String, fetchData: FetchData) {
+    private fun processPaidFeature(fetchData: FetchData) {
         val edit = sharedPreferences.edit()
         edit.putString("date", "${fetchData.date}:${fetchData.period}")
         edit.putString("status", fetchData.getStatus().status)
         edit.apply()
 
-        val stringBuilder = StringBuilder()
-        stringBuilder.append(getString(R.string.statusMode).replace("{status}", status))
-        stringBuilder.append("\n")
-        stringBuilder.append(getString(R.string.remainTime).replace("{time}", getRemainingTime()))
-        binding.testStatus.text = stringBuilder.toString()
-        binding.progressLoad.isVisible = false
-        binding.testStatus.isVisible = true
-        binding.linearSupport.isVisible = true
-        processDeeplink(intent)
-
         if (intent.data == null && fetchData.updateRequired) {
-            UpdateDialog().show(supportFragmentManager, null)
+            UpdateDialog()
+                .show(supportFragmentManager, null)
         }
     }
 

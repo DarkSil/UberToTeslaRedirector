@@ -9,7 +9,7 @@ import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import com.waze.databinding.ActivityPaymentBinding
 
-class PaymentActivity : AppCompatActivity() {
+class RoutesActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityPaymentBinding.inflate(layoutInflater) }
 

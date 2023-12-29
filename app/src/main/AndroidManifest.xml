@@ -6,14 +6,11 @@
 
     <application
         android:allowBackup="true"
-        android:dataExtractionRules="@xml/data_extraction_rules"
-        android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/logo"
         android:roundIcon="@mipmap/logo_round"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.GoogleMapRedirector"
-        tools:targetApi="31">
+        android:theme="@style/Theme.GoogleMapRedirector">
         <activity
             android:name=".FreeMapAppActivity"
             android:exported="true"
@@ -31,7 +28,7 @@
                 <data android:scheme="waze"/>
             </intent-filter>
         </activity>
-        <activity android:name=".PaymentActivity"
+        <activity android:name=".RoutesActivity"
             android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation|screenSize"/>
         <meta-data
