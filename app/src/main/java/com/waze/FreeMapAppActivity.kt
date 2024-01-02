@@ -92,6 +92,14 @@ class FreeMapAppActivity : AppCompatActivity() {
             fetch()
         }
 
+        if (intent.extras?.getBoolean("reload") != true) {
+            create()
+        } else {
+            fetch()
+        }
+    }
+
+    private fun create() {
         val date = sharedPreferences.getString("date", null)
         with(date) {
             this?.let {
