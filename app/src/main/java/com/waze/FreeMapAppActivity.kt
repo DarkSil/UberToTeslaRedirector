@@ -226,6 +226,8 @@ class FreeMapAppActivity : AppCompatActivity() {
                 binding.paymentButton.isVisible = false
                 binding.linearSubscription.isVisible = true
                 binding.linearSupport.isVisible = true
+
+                processDeeplink(intent)
             }
             FetchData.STATUS.UNPAID -> {
                 handleUnpaid(fetchData)
@@ -234,6 +236,12 @@ class FreeMapAppActivity : AppCompatActivity() {
     }
 
     private fun handleUnpaid(fetchData: FetchData) {
+
+        val edit = sharedPreferences.edit()
+        edit.putString("date", null)
+        edit.putString("status", fetchData.getStatus().status)
+        edit.apply()
+
         binding.refreshLayout.isRefreshing = false
         binding.linearSubscription.isVisible = true
         binding.textPeriodEnded.isVisible = true
