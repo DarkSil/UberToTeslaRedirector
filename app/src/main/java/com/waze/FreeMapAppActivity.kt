@@ -24,9 +24,6 @@ import java.time.ZoneId
 
 class FreeMapAppActivity : AppCompatActivity() {
 
-    // TODO Change +2 to the server timezone
-    // TODO Change email address
-
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private val WAZE_CONST = "waze://?ll="
 
@@ -83,7 +80,7 @@ class FreeMapAppActivity : AppCompatActivity() {
             isRedirect = true
 
             val subject = getString(R.string.emailSubject).replace("{id}", id)
-            val mailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:example@gmail.com?subject=$subject"))
+            val mailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:info@teslagpsconnection.space?subject=$subject"))
             startActivity(Intent.createChooser(mailIntent, "Select an app"))
         }
 
