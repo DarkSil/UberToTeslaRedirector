@@ -89,10 +89,10 @@ class FreeMapAppActivity : AppCompatActivity() {
             fetch()
         }
 
-        if (intent.extras?.getBoolean("reload") != true) {
-            create()
-        } else {
+        if (intent.extras?.getBoolean("reload") == true || intent?.data == null) {
             fetch()
+        } else {
+            create()
         }
     }
 
