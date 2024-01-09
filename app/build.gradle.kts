@@ -11,8 +11,8 @@ android {
         applicationId = "com.waze"
         minSdk = 26
         targetSdk = 34
-        versionCode = 4
-        versionName = "4.0"
+        versionCode = 2030440
+        versionName = "5.100.1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
