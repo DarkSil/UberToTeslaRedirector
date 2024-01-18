@@ -25,7 +25,7 @@ import java.time.ZoneId
 class FreeMapAppActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    private val WAZE_CONST = "waze://?ll="
+    private val WAZE_CONST = listOf<String>("waze://?ll=", "waze.com")
 
     companion object {
         var isRedirect = false
@@ -282,14 +282,14 @@ class FreeMapAppActivity : AppCompatActivity() {
 
             val geo = if (uri.startsWith("geo:")) {
                 uri
-            } else if (uri.startsWith(WAZE_CONST)) {
+            } else if (uri.startsWith(WAZE_CONST[0])) {
 
                 var lastIndex = uri.indexOf("&")
                 if (lastIndex == -1) {
                     lastIndex = uri.length
                 }
 
-                val ll = uri.substring(WAZE_CONST.length, lastIndex)
+                val ll = uri.substring(WAZE_CONST[0].length, lastIndex)
 
                 val text = "geo:$ll"
 
@@ -299,6 +299,8 @@ class FreeMapAppActivity : AppCompatActivity() {
                     text
                 }
 
+            } else if (uri.contains(WAZE_CONST[1])) {
+                "geo:${uri.substring(uri.indexOf("=ll.") + 4).replace("&", ",").replace("%2C", ",")}"
             } else {
                 ""
             }
@@ -312,9 +314,13 @@ class FreeMapAppActivity : AppCompatActivity() {
                 Uri.parse(geo)
             )
 
-            intent.setPackage("com.teslamotors.tesla")
-            startActivity(intent)
-            finish()
+            try {
+                intent.setPackage("com.teslamotors.tesla")
+                startActivity(intent)
+                finish()
+            } catch (e: Exception) {
+                println(e.message )
+            }
         }
     }
 
