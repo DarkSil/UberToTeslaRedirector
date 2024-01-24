@@ -279,7 +279,7 @@ class FreeMapAppActivity : AppCompatActivity() {
 
     private fun processDeeplink(intent: Intent?) {
         intent?.data?.let {
-            binding.textData.text = it.toString()
+            binding.textData.text = "${it}\nExtras: ${intent.extras.toString()}"
             return
 
             val uri = it.toString()
