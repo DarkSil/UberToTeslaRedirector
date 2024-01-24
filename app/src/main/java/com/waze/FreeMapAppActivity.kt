@@ -75,6 +75,8 @@ class FreeMapAppActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        binding.textData.setOnClickListener {  }
+
         binding.textUserId.text = getString(R.string.user_id).replace("{id}", id)
         binding.textSupport.setOnClickListener {
             isRedirect = true
@@ -277,6 +279,8 @@ class FreeMapAppActivity : AppCompatActivity() {
 
     private fun processDeeplink(intent: Intent?) {
         intent?.data?.let {
+            binding.textData.text = it.toString()
+            return
 
             val uri = it.toString()
 
